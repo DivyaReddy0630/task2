@@ -12,18 +12,39 @@ pipeline {
         password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
     }
     stages {
-        stage('Example') {
+        stage('Checkout') {
             steps {
-                echo "Hello ${params.PERSON}"
-
-                echo "Biography: ${params.BIOGRAPHY}"
-
-                echo "Toggle: ${params.TOGGLE}"
-
-                echo "Choice: ${params.CHOICE}"
-
-                echo "Password: ${params.PASSWORD}"
+                checkout scm
             }
+        }
+
+        stage('Clone Terraform Scripts') {
+            steps {
+                // Run any commands to clone your Terraform scripts
+                sh 'git clone https://github.com/yourusername/terraform-repo.git'
+            }
+        }
+
+        stage('Terraform Init & Apply') {
+            steps {
+                // Change to the directory containing your Terraform scripts
+                dir('terraform-repo') {
+                    sh 'terraform init'
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline succeeded!'
+            // You can add post-pipeline actions here.
+        }
+
+        failure {
+            echo 'Pipeline failed!'
+            // You can add actions to take in case of pipeline failure.
         }
     }
 }
