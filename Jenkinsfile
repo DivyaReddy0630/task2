@@ -21,7 +21,7 @@ pipeline {
         stage('Clone Terraform Scripts') {
             steps {
                 // Run any commands to clone your Terraform scripts
-                sh 'git clone https://github.com/yourusername/terraform-repo.git'
+                sh 'git clone https://github.com/DivyaReddy0630/task2.git'
             }
         }
 
